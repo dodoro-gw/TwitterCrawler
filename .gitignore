@@ -1,7 +1,12 @@
 # maven target directory
 target
+
 # eclipse related files
 .DS_Store
 .classpath
 .project
 .settings/
+
+# intellij files
+.idea/
+*.iml
