@@ -1,0 +1,14 @@
+[
+  {
+    "consumer_secret": "secret",
+    "consumer_key": "key",
+    "token": "token",
+    "token_secret": "token_secret"
+  },
+  {
+    "consumer_secret": "secret",
+    "consumer_key": "key",
+    "token": "token",
+    "token_secret": "token_secret"
+  }
+]

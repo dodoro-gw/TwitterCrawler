@@ -1,18 +1,17 @@
 package sg.edu.smu.weigong.TwitterUtil.oauth;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import twitter4j.*;
+import twitter4j.conf.*;
 
-import twitter4j.Twitter;
-import twitter4j.TwitterFactory;
-import twitter4j.conf.ConfigurationBuilder;
+import java.util.*;
 
 public class TwitterClientAccountList {
+
 	public  static List<OAuth> accountList;
+
 	public static Integer active;
-	
-	
+
+
 	//get the accounts from Twitter Rest API
 	//account is in JSON format
 	public static String account0 = "{\"consumer_secret\":\"\",\"consumer_key\":\"\",\"token\":\"\",\"token_secret\":\"\"}";
@@ -46,10 +45,10 @@ public class TwitterClientAccountList {
 	public static String account28 = "";
 	public static String account29 = "";
 
-	
+
 	/*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&remember to change the number of accounts*/
 	public static int numOfAccounts = 30;
-	
+
 	static{
 		List<OAuth> accountListTemp = new ArrayList<OAuth>();
 		OAuth auth0 = new OAuth(account0, 0);
@@ -67,7 +66,7 @@ public class TwitterClientAccountList {
 		OAuth auth12 = new OAuth(account12, 12);
 		OAuth auth13 = new OAuth(account13, 13);
 		OAuth auth14 = new OAuth(account14, 14);
-		
+
 		OAuth auth15 = new OAuth(account15, 15);
 		OAuth auth16 = new OAuth(account16, 16);
 		OAuth auth17 = new OAuth(account17, 17);
@@ -95,18 +94,18 @@ public class TwitterClientAccountList {
 		accountListTemp.add(auth8);
 		accountListTemp.add(auth9);
 		accountListTemp.add(auth10);
-		accountListTemp.add(auth11);		
+		accountListTemp.add(auth11);
 		accountListTemp.add(auth12);
 		accountListTemp.add(auth13);
 		accountListTemp.add(auth14);
-		
+
 		accountListTemp.add(auth15);
 		accountListTemp.add(auth16);
 		accountListTemp.add(auth17);
 		accountListTemp.add(auth18);
 		accountListTemp.add(auth19);
 		accountListTemp.add(auth20);
-		accountListTemp.add(auth21);		
+		accountListTemp.add(auth21);
 		accountListTemp.add(auth22);
 		accountListTemp.add(auth23);
 		accountListTemp.add(auth24);
@@ -120,7 +119,7 @@ public class TwitterClientAccountList {
 
 		active = null;
 	}
-	
+
 	public static int nextAccount(){
 		if(active < numOfAccounts-1){
 			return active+1;
@@ -128,12 +127,12 @@ public class TwitterClientAccountList {
 			return 0;
 		}
 	}
-	
+
 	public static Twitter nextTwitterClient(){
 		int next = nextAccount();
 		return createTwitterClient(next);
 	}
-	
+
 	public static Twitter createTwitterClient(int a){
 		active = a;
 		ConfigurationBuilder cb = new ConfigurationBuilder();
@@ -142,9 +141,9 @@ public class TwitterClientAccountList {
 		.setOAuthConsumerSecret(accountList.get(a).consumer_key_secret)
 		.setOAuthAccessToken(accountList.get(a).token)
 		.setOAuthAccessTokenSecret(accountList.get(a).token_secret);
-		cb.setIncludeEntitiesEnabled(true);		
+		cb.setIncludeEntitiesEnabled(true);
 		Twitter twitter = new TwitterFactory(cb.build()).getInstance();
 		return twitter;
 	}
-	
+
 }
