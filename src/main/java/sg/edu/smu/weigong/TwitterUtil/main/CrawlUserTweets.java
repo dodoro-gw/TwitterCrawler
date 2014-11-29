@@ -7,12 +7,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 
-import sg.edu.smu.weigong.TwitterUtil.crawler.CrawlerForOneUser;
-import sg.edu.smu.weigong.TwitterUtil.oauth.TwitterClientAccountList;
+import sg.edu.smu.weigong.TwitterUtil.crawler.Crawler;
 import sg.edu.smu.weigong.TwitterUtil.util.TextUtil;
-import sg.edu.smu.weigong.TwitterUtil.util.TwitterUtil;
 import twitter4j.ResponseList;
-import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.User;
 
@@ -29,12 +26,11 @@ public class CrawlUserTweets {
 
 		//load user id list
 		long[] usersList = TextUtil.getUserList(userIdFile);
+
+		//new crawler
+		Crawler crawler = new Crawler();
 		
-		//set up for twitter
-		Twitter  twitter = TwitterClientAccountList.createTwitterClient(0);
-
-		CrawlerForOneUser.setTwitter(twitter);
-
+		
 		//At each time, look up 99 users and crawl their follw links
 		int numOfUsers = usersList.length; 
 		int batch = (int) Math.ceil((double)numOfUsers/99); 
@@ -46,31 +42,17 @@ public class CrawlUserTweets {
 				subUsersList = Arrays.copyOfRange(usersList, i*99, numOfUsers);
 			}
 			
-			ResponseList<User> users = null;
-			while(users == null){
-				try{
-					users = twitter.lookupUsers(subUsersList);
-				}catch(Exception e){
-					if(TwitterUtil.isLimitAvailable(twitter)){
-						e.printStackTrace();
-						break;
-					}else{
-						//twitter = TwitterUtil.checkAndWait(twitter);
-						twitter = TwitterClientAccountList.nextTwitterClient();
-						TwitterUtil.waitUntilAvailable(twitter);
-					}
-				}
-			}
+			ResponseList<User> users = crawler.crawlResponseUsers(subUsersList);
+			
 			if(users != null){
 				for (User user : users) {
-					CrawlerForOneUser.setUser(user);
 					boolean isProtected = user.isProtected();
 			    	if(isProtected == true){
 			    		continue;
 			    	}
 			    	System.out.println("User: @" + user.getScreenName() + "\t" + user.getId());
 			    	PrintWriter tweetWriter = new PrintWriter(new BufferedWriter(new FileWriter(outputTweetsFolder+"_"+user.getId())));
-			    	tweetWriter.println(CrawlerForOneUser.crawlUserTweets(1));
+			    	tweetWriter.println(crawler.crawlUserTweets(user, 1));
 			    	tweetWriter.close();
 				}
 			}
