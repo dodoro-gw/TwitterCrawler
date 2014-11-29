@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>sg.edu.smu.weigong</groupId>
+	<groupId>sg.edu.smu.sis</groupId>
 	<artifactId>TwitterCrawler</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
@@ -27,19 +27,13 @@
 				</configuration>
 			</plugin>
 
-			<!-- @Stanley Commented out as it is not a good approach -->
-			<!-- <plugin> <artifactId>maven-assembly-plugin</artifactId> <executions> 
-				<execution> <phase>package</phase> <goals> <goal>single</goal> </goals> </execution> 
-				</executions> <configuration> <descriptorRefs> <descriptorRef>jar-with-dependencies</descriptorRef> 
-				</descriptorRefs> </configuration> </plugin> -->
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>sg.edu.smu.sis.twittercrawler.crawler.CrawlUserTweets</mainClass>
+							<mainClass>sg.edu.smu.sis.twittercrawler.cli.Main</mainClass>
 							<addClasspath>true</addClasspath>
 						</manifest>
 					</archive>
@@ -55,6 +49,7 @@
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
 			<version>6.8.8</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -72,7 +67,7 @@
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20141113</version>
+			<version>20090211</version>
 		</dependency>
 
 		<dependency>
