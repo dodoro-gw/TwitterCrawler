@@ -1,4 +1,4 @@
-package sg.edu.smu.weigong.TwitterUtil.oauth;
+package sg.edu.smu.sis.twittercrawler.oauth;
 
 import com.fasterxml.jackson.core.type.*;
 import com.fasterxml.jackson.databind.*;

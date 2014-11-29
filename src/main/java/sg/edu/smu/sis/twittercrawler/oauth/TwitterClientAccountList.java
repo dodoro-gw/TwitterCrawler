@@ -1,4 +1,4 @@
-package sg.edu.smu.weigong.TwitterUtil.oauth;
+package sg.edu.smu.sis.twittercrawler.oauth;
 
 import twitter4j.*;
 import twitter4j.conf.*;

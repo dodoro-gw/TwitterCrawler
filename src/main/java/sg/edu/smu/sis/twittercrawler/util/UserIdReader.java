@@ -1,4 +1,4 @@
-package sg.edu.smu.weigong.TwitterUtil.util;
+package sg.edu.smu.sis.twittercrawler.util;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TextUtil {
+public class UserIdReader {
 	
 	//for loading user id list
 	public static long[] getUserList(String userIdFile)

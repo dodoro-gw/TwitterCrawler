@@ -1,8 +1,9 @@
-import org.testng.*;
-import org.testng.annotations.*;
-import sg.edu.smu.weigong.TwitterUtil.oauth.*;
+package sg.edu.smu.sis.twittercrawler.oauth;
 
-import java.io.*;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import java.io.IOException;
 
 /**
  * Created by taosun on 28/11/14.

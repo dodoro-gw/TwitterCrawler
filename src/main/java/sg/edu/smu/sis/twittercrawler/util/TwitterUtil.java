@@ -1,13 +1,10 @@
-package sg.edu.smu.weigong.TwitterUtil.util;
+package sg.edu.smu.sis.twittercrawler.util;
 import java.util.Map;
 
-import sg.edu.smu.weigong.TwitterUtil.oauth.TwitterClientAccountList;
+import sg.edu.smu.sis.twittercrawler.oauth.TwitterClientAccountList;
 import twitter4j.RateLimitStatus;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.User;
-import twitter4j.conf.ConfigurationBuilder;
 
 public class TwitterUtil {
 	

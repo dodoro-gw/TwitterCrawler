@@ -1,4 +1,4 @@
-package sg.edu.smu.weigong.TwitterUtil.main;
+package sg.edu.smu.sis.twittercrawler.crawler;
 
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -7,30 +7,30 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 
-import sg.edu.smu.weigong.TwitterUtil.crawler.Crawler;
-import sg.edu.smu.weigong.TwitterUtil.util.TextUtil;
+import sg.edu.smu.sis.twittercrawler.util.UserIdReader;
 import twitter4j.ResponseList;
 import twitter4j.TwitterException;
 import twitter4j.User;
 
-public class CrawlUserTweets {
+public class CrawlUserProfile {
 
-	public static void main(String[] args) throws InterruptedException, FileNotFoundException, IOException, TwitterException {
+	public static void main(String[] args) throws FileNotFoundException, IOException, InterruptedException, TwitterException {
 		String userIdFile = "C:\\Users\\wei.gong.2011\\Dropbox\\Daily Records\\hidden topic interest\\data\\seedUserFolloweeIdsList.csv";
-		String outputTweetsFolder = "E:\\hidden topic interest\\followeeTweets\\";
-
+		String outputUserProfileFile = "E:\\hidden topic interest\\followeeProfile.csv";
 		if(args.length == 2){
 			userIdFile = args[0];
-			outputTweetsFolder = args[1];
+			outputUserProfileFile = args[1];
 		}
 
 		//load user id list
-		long[] usersList = TextUtil.getUserList(userIdFile);
-
+		long[] usersList = UserIdReader.getUserList(userIdFile);
+		
+		//output file
+		PrintWriter profileWriter = new PrintWriter(new BufferedWriter(new FileWriter(outputUserProfileFile)));
+		
 		//new crawler
 		Crawler crawler = new Crawler();
-		
-		
+
 		//At each time, look up 99 users and crawl their follw links
 		int numOfUsers = usersList.length; 
 		int batch = (int) Math.ceil((double)numOfUsers/99); 
@@ -42,22 +42,17 @@ public class CrawlUserTweets {
 				subUsersList = Arrays.copyOfRange(usersList, i*99, numOfUsers);
 			}
 			
+			
 			ResponseList<User> users = crawler.crawlResponseUsers(subUsersList);
 			
 			if(users != null){
 				for (User user : users) {
-					boolean isProtected = user.isProtected();
-			    	if(isProtected == true){
-			    		continue;
-			    	}
-			    	System.out.println("User: @" + user.getScreenName() + "\t" + user.getId());
-			    	PrintWriter tweetWriter = new PrintWriter(new BufferedWriter(new FileWriter(outputTweetsFolder+"_"+user.getId())));
-			    	tweetWriter.println(crawler.crawlUserTweets(user, 1));
-			    	tweetWriter.close();
+			    	System.out.println("User: @" + user.getId());
+			    	profileWriter.println(crawler.crawlUserProfile(user));
 				}
 			}
 		}
-		
+		profileWriter.close();
 	}
 
 }

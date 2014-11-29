@@ -39,7 +39,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>sg.edu.smu.weigong.TwitterUtil.main.CrawlUserTweets</mainClass>
+							<mainClass>sg.edu.smu.sis.twittercrawler.crawler.CrawlUserTweets</mainClass>
 							<addClasspath>true</addClasspath>
 						</manifest>
 					</archive>
@@ -61,6 +61,12 @@
 			<groupId>org.twitter4j</groupId>
 			<artifactId>twitter4j-core</artifactId>
 			<version>4.0.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-cli</groupId>
+			<artifactId>commons-cli</artifactId>
+			<version>1.2</version>
 		</dependency>
 
 		<dependency>
