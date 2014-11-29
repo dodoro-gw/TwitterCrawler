@@ -3,6 +3,7 @@ package sg.edu.smu.weigong.TwitterUtil.crawler;
 import java.util.List;
 import java.util.Map;
 
+import sg.edu.smu.weigong.TwitterUtil.oauth.TwitterClientAccountList;
 import sg.edu.smu.weigong.TwitterUtil.util.TwitterUtil;
 import twitter4j.IDs;
 import twitter4j.Paging;
@@ -62,7 +63,14 @@ public class CrawlerForOneUser {
 				try{
 					statuses = twitter.getUserTimeline(user.getScreenName(), paging);
 				}catch(Exception e){
-					twitter = TwitterUtil.checkAndWait(twitter);
+					if(TwitterUtil.isLimitAvailable(twitter)){
+						e.printStackTrace();
+						return null;
+					}else{
+						//twitter = TwitterUtil.checkAndWait(twitter);
+						twitter = TwitterClientAccountList.nextTwitterClient();
+						TwitterUtil.waitUntilAvailable(twitter);
+					}
 				}
 			}
         	
@@ -89,12 +97,20 @@ public class CrawlerForOneUser {
 				try{
 					ids = twitter.getFollowersIDs(user.getId(), cursor);
 				}catch(Exception e){
-					twitter = TwitterUtil.checkAndWait(twitter);
+					if(TwitterUtil.isLimitAvailable(twitter)){
+						e.printStackTrace();
+						return null;
+					}else{
+						//twitter = TwitterUtil.checkAndWait(twitter);
+						twitter = TwitterClientAccountList.nextTwitterClient();
+						TwitterUtil.waitUntilAvailable(twitter);
+					}
 				}
 			}
-		    
-		    for (long id : ids.getIDs()) {
-		    	followerIds.append(id + "-");
+		    if(ids != null){
+			    for (long id : ids.getIDs()) {
+			    	followerIds.append(id + "-");
+			    }
 		    }
 		}while ((cursor = ids.getNextCursor()) != 0);
 		if(followerIds.length() >= 1){
@@ -116,12 +132,20 @@ public class CrawlerForOneUser {
 				try{
 					ids = twitter.getFriendsIDs(user.getId(), cursor);	
 				}catch(Exception e){
-					twitter = TwitterUtil.checkAndWait(twitter);
+					if(TwitterUtil.isLimitAvailable(twitter)){
+						e.printStackTrace();
+						return null;
+					}else{
+						//twitter = TwitterUtil.checkAndWait(twitter);
+						twitter = TwitterClientAccountList.nextTwitterClient();
+						TwitterUtil.waitUntilAvailable(twitter);
+					}
 				}
 			}
-		    
-		    for (long id : ids.getIDs()) {
-		    	followeeIds.append(id + "-");
+		    if(ids != null){
+			    for (long id : ids.getIDs()) {
+			    	followeeIds.append(id + "-");
+			    }
 		    }
 		}while ((cursor = ids.getNextCursor()) != 0);
 		if(followeeIds.length() >= 1){

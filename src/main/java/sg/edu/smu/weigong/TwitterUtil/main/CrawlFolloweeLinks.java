@@ -19,9 +19,9 @@ import twitter4j.User;
 public class CrawlFolloweeLinks {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, InterruptedException, TwitterException {
-		String userIdFile = "C:\\Users\\wei.gong.2011\\Dropbox\\Daily Records\\hidden topic interest\\data\\testUserList.csv";
+		String userIdFile = "/Users/sunflower/Dropbox/Daily Records/hidden topic interest/data/seedUserFolloweeIdsList_tail.csv";
 		//String outputTweetsFile = "C:\\Users\\wei.gong.2011\\Dropbox\\Daily Records\\hidden topic interest\\data\\userTweets.csv";
-		String outputFolloweeLinkFile = "C:\\Users\\wei.gong.2011\\Dropbox\\Daily Records\\hidden topic interest\\data\\testUserFolloweeLink.csv";
+		String outputFolloweeLinkFile = "/Users/sunflower/Dropbox/Daily Records/hidden topic interest/data/testUserFolloweeLink.csv";
 		if(args.length == 2){
 			userIdFile = args[0];
 			//outputTweetsFile = args[1];
@@ -32,7 +32,7 @@ public class CrawlFolloweeLinks {
 		long[] usersList = TextUtil.getUserList(userIdFile);
 		
 		//set up for twitter
-		Twitter  twitter = TwitterClientAccountList.createTwitterClient(2);
+		Twitter  twitter = TwitterClientAccountList.createTwitterClient(10);
 		
 		//output file
 		PrintWriter followWriter = new PrintWriter(new BufferedWriter(new FileWriter(outputFolloweeLinkFile)));
@@ -55,19 +55,28 @@ public class CrawlFolloweeLinks {
 				try{
 					users = twitter.lookupUsers(subUsersList);
 				}catch(Exception e){
-					twitter = TwitterUtil.checkAndWait(twitter);
+					if(TwitterUtil.isLimitAvailable(twitter)){
+						e.printStackTrace();
+						break;
+					}else{
+						//twitter = TwitterUtil.checkAndWait(twitter);
+						twitter = TwitterClientAccountList.nextTwitterClient();
+						TwitterUtil.waitUntilAvailable(twitter);
+					}
 				}
 			}
-			for (User user : users) {
-				CrawlerForOneUser.setUser(user);
-				boolean isProtected = user.isProtected();
-		    	if(isProtected == true){
-		    		continue;
-		    	}
-		    	System.out.println("User: @" + user.getId());
-		    	followWriter.print(user.getId()+",");
-		    	//followWriter.print(CrawlerForOneUser.crawlUserFollowerLinks() + ",");
-		    	followWriter.println(CrawlerForOneUser.crawlUserFolloweeLinks());
+			if(users != null){
+				for (User user : users) {
+					CrawlerForOneUser.setUser(user);
+					boolean isProtected = user.isProtected();
+			    	if(isProtected == true){
+			    		continue;
+			    	}
+			    	System.out.println("User: @" + user.getId());
+			    	followWriter.print(user.getId()+",");
+			    	//followWriter.print(CrawlerForOneUser.crawlUserFollowerLinks() + ",");
+			    	followWriter.println(CrawlerForOneUser.crawlUserFolloweeLinks());
+				}
 			}
 			followWriter.flush();
 		}

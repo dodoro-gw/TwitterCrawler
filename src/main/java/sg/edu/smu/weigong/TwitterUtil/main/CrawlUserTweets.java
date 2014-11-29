@@ -51,20 +51,28 @@ public class CrawlUserTweets {
 				try{
 					users = twitter.lookupUsers(subUsersList);
 				}catch(Exception e){
-					twitter = TwitterUtil.checkAndWait(twitter);
+					if(TwitterUtil.isLimitAvailable(twitter)){
+						e.printStackTrace();
+						break;
+					}else{
+						//twitter = TwitterUtil.checkAndWait(twitter);
+						twitter = TwitterClientAccountList.nextTwitterClient();
+						TwitterUtil.waitUntilAvailable(twitter);
+					}
 				}
 			}
-			
-			for (User user : users) {
-				CrawlerForOneUser.setUser(user);
-				boolean isProtected = user.isProtected();
-		    	if(isProtected == true){
-		    		continue;
-		    	}
-		    	System.out.println("User: @" + user.getScreenName() + "\t" + user.getId());
-		    	PrintWriter tweetWriter = new PrintWriter(new BufferedWriter(new FileWriter(outputTweetsFolder+"_"+user.getId())));
-		    	tweetWriter.println(CrawlerForOneUser.crawlUserTweets(1));
-		    	tweetWriter.close();
+			if(users != null){
+				for (User user : users) {
+					CrawlerForOneUser.setUser(user);
+					boolean isProtected = user.isProtected();
+			    	if(isProtected == true){
+			    		continue;
+			    	}
+			    	System.out.println("User: @" + user.getScreenName() + "\t" + user.getId());
+			    	PrintWriter tweetWriter = new PrintWriter(new BufferedWriter(new FileWriter(outputTweetsFolder+"_"+user.getId())));
+			    	tweetWriter.println(CrawlerForOneUser.crawlUserTweets(1));
+			    	tweetWriter.close();
+				}
 			}
 		}
 		

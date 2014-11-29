@@ -54,15 +54,23 @@ public class CrawlUserProfile {
 				try{
 					users = twitter.lookupUsers(subUsersList);
 				}catch(Exception e){
-					twitter = TwitterUtil.checkAndWait(twitter);
+					if(TwitterUtil.isLimitAvailable(twitter)){
+						e.printStackTrace();
+						break;
+					}else{
+						//twitter = TwitterUtil.checkAndWait(twitter);
+						twitter = TwitterClientAccountList.nextTwitterClient();
+						TwitterUtil.waitUntilAvailable(twitter);
+					}
 				}
 			}
-			
-			for (User user : users) {
-				CrawlerForOneUser.setUser(user);
-				
-		    	System.out.println("User: @" + user.getId());
-		    	profileWriter.println(CrawlerForOneUser.crawlUserProfile());
+			if(users != null){
+				for (User user : users) {
+					CrawlerForOneUser.setUser(user);
+					
+			    	System.out.println("User: @" + user.getId());
+			    	profileWriter.println(CrawlerForOneUser.crawlUserProfile());
+				}
 			}
 		}
 		profileWriter.close();

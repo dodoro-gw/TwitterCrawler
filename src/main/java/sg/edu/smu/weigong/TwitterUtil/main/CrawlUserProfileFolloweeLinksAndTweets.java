@@ -58,30 +58,38 @@ public class CrawlUserProfileFolloweeLinksAndTweets {
 				try{
 					users = twitter.lookupUsers(subUsersList);
 				}catch(Exception e){
-					twitter = TwitterUtil.checkAndWait(twitter);
+					if(TwitterUtil.isLimitAvailable(twitter)){
+						e.printStackTrace();
+						break;
+					}else{
+						//twitter = TwitterUtil.checkAndWait(twitter);
+						twitter = TwitterClientAccountList.nextTwitterClient();
+						TwitterUtil.waitUntilAvailable(twitter);
+					}
 				}
 			}
-			
-			for (User user : users) {
-				CrawlerForOneUser.setUser(user);
-		    	System.out.println("User: @" + user.getId());
-		    	
-		    	//output profile
-		    	profileWriter.println(CrawlerForOneUser.crawlUserProfile());
-		    	
-				boolean isProtected = user.isProtected();
-		    	if(isProtected == true){
-		    		continue;
-		    	}
-
-		    	//output followees
-		    	followWriter.print(user.getId()+",");
-		    	followWriter.println(CrawlerForOneUser.crawlUserFolloweeLinks());
-		    	
-		    	//output tweets
-		    	PrintWriter tweetWriter = new PrintWriter(new BufferedWriter(new FileWriter(outputTweetsFolder+"_"+user.getId())));
-		    	tweetWriter.println(CrawlerForOneUser.crawlUserTweets(5));
-		    	tweetWriter.close();
+			if(users != null){
+				for (User user : users) {
+					CrawlerForOneUser.setUser(user);
+			    	System.out.println("User: @" + user.getId());
+			    	
+			    	//output profile
+			    	profileWriter.println(CrawlerForOneUser.crawlUserProfile());
+			    	
+					boolean isProtected = user.isProtected();
+			    	if(isProtected == true){
+			    		continue;
+			    	}
+	
+			    	//output followees
+			    	followWriter.print(user.getId()+",");
+			    	followWriter.println(CrawlerForOneUser.crawlUserFolloweeLinks());
+			    	
+			    	//output tweets
+			    	PrintWriter tweetWriter = new PrintWriter(new BufferedWriter(new FileWriter(outputTweetsFolder+"_"+user.getId())));
+			    	tweetWriter.println(CrawlerForOneUser.crawlUserTweets(5));
+			    	tweetWriter.close();
+				}
 			}
 			profileWriter.flush();
 			followWriter.flush();

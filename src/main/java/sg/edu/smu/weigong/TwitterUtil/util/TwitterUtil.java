@@ -43,7 +43,8 @@ public class TwitterUtil {
 			    RateLimitStatus status = rateLimitStatus.get(endpoint);
 
 				if(status.getRemaining() == 0){
-					//System.out.println("Hit limit reached for "+endpoint+" api call. Next quota available in " + status.getSecondsUntilReset() + " sec.");
+					System.out.println(TwitterClientAccountList.active);
+					System.out.println("Hit limit reached for "+endpoint+" api call. Next quota available in " + status.getSecondsUntilReset() + " sec.");
 					return false;
 				}
 			}

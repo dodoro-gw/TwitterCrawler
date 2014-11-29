@@ -18,6 +18,9 @@ public class TextUtil {
 		List<Long> userIds = new ArrayList<Long>();
 		while((line = reader.readLine()) != null){
 			String id = line;
+			if(id.length() < 1){
+				continue;
+			}
 			if(line.contains(",")){
 				String columns[] = line.split(",");
 				id = columns[0];
