@@ -1,27 +1,22 @@
-package sg.edu.smu.weigong.TwitterUtil.main;
+package sg.edu.smu.sis.twittercrawler.crawler;
 
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import sg.edu.smu.weigong.TwitterUtil.crawler.Crawler;
-import sg.edu.smu.weigong.TwitterUtil.task.AbstractTask;
-import sg.edu.smu.weigong.TwitterUtil.task.CrawlFolloweeTask;
-import sg.edu.smu.weigong.TwitterUtil.task.CrawlUserProfileTask;
-import sg.edu.smu.weigong.TwitterUtil.task.CrawlUserTweetsTask;
-import sg.edu.smu.weigong.TwitterUtil.util.TextUtil;
+import sg.edu.smu.sis.twittercrawler.task.AbstractTask;
+import sg.edu.smu.sis.twittercrawler.task.CrawlFolloweeTask;
+import sg.edu.smu.sis.twittercrawler.task.CrawlUserProfileTask;
+import sg.edu.smu.sis.twittercrawler.task.CrawlUserTweetsTask;
+import sg.edu.smu.sis.twittercrawler.util.UserIdReader;
 import twitter4j.ResponseList;
 import twitter4j.TwitterException;
 import twitter4j.User;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class CrawlerProcessor {
 	
-	public static void run(long[] userIds, Crawler crawler, List<AbstractTask> tasks) {	
+	public static void run(long[] userIds, Crawler crawler, List<AbstractTask> tasks) {
 		ResponseList<User> users;
 		users = crawler.crawlResponseUsers(userIds);
 		
@@ -53,7 +48,7 @@ public class CrawlerProcessor {
 		}
 
 		//load user id list
-		long[] usersList = TextUtil.getUserList(userIdFile);
+		long[] usersList = UserIdReader.getUserList(userIdFile);
 		
 		//set up for crawler 
 		Crawler crawler = new Crawler();
@@ -61,14 +56,12 @@ public class CrawlerProcessor {
 		//output file
 		PrintWriter profileWriter = new PrintWriter(new BufferedWriter(new FileWriter(outputUserProfileFile)));
 		PrintWriter followeeWriter = new PrintWriter(new BufferedWriter(new FileWriter(outputFolloweeLinkFile)));
-		
-		
+
 		List<AbstractTask> tasks = new ArrayList<AbstractTask>();
 		tasks.add(new CrawlUserTweetsTask(outputTweetsFolder));
 		tasks.add(new CrawlFolloweeTask(followeeWriter));
 		tasks.add(new CrawlUserProfileTask(profileWriter));
-		
-		
+
 		//At each time, look up 99 users and crawl their follw links
 		int numOfUsers = usersList.length; 
 		int batch = (int) Math.ceil((double)numOfUsers/99); 

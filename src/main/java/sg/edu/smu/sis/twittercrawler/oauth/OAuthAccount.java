@@ -1,4 +1,4 @@
-package sg.edu.smu.weigong.TwitterUtil.oauth;
+package sg.edu.smu.sis.twittercrawler.oauth;
 
 /**
  * Created by taosun on 28/11/14.

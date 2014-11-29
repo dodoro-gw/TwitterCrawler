@@ -1,10 +1,10 @@
 package sg.edu.smu.sis.twittercrawler.cli;
 
 import org.apache.commons.cli.*;
-import sg.edu.smu.weigong.TwitterUtil.task.AbstractTask;
-import sg.edu.smu.weigong.TwitterUtil.task.CrawlFolloweeTask;
-import sg.edu.smu.weigong.TwitterUtil.task.CrawlUserProfileTask;
-import sg.edu.smu.weigong.TwitterUtil.task.CrawlUserTweetsTask;
+import sg.edu.smu.sis.twittercrawler.task.AbstractTask;
+import sg.edu.smu.sis.twittercrawler.task.CrawlUserProfileTask;
+import sg.edu.smu.sis.twittercrawler.task.CrawlFolloweeTask;
+import sg.edu.smu.sis.twittercrawler.task.CrawlUserTweetsTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  * @author taosun
  * @since 29/11/14
  */
-public class CliParser {
+public class Main {
 
     private static final String PROFILE = "profile";
     private static final String TWEETS = "tweets";
@@ -32,7 +32,6 @@ public class CliParser {
 
     public static void main(String[] args) {
         List<AbstractTask> tasks = createTasks(args);
-        // TODO
     }
 
     private static List<AbstractTask> createTasks(String[] args) {

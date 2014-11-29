@@ -1,17 +1,11 @@
-package sg.edu.smu.weigong.TwitterUtil.crawler;
+package sg.edu.smu.sis.twittercrawler.crawler;
+
+import sg.edu.smu.sis.twittercrawler.task.AbstractTask;
+import sg.edu.smu.sis.twittercrawler.util.TwitterUtil;
+import sg.edu.smu.sis.twittercrawler.oauth.TwitterClientAccountList;
+import twitter4j.*;
 
 import java.util.List;
-
-import sg.edu.smu.weigong.TwitterUtil.oauth.TwitterClientAccountList;
-import sg.edu.smu.weigong.TwitterUtil.task.AbstractTask;
-import sg.edu.smu.weigong.TwitterUtil.util.TwitterUtil;
-import twitter4j.IDs;
-import twitter4j.Paging;
-import twitter4j.ResponseList;
-import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.User;
 
 public class Crawler {
 

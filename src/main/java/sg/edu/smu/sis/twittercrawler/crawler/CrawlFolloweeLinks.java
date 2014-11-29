@@ -1,4 +1,4 @@
-package sg.edu.smu.weigong.TwitterUtil.main;
+package sg.edu.smu.sis.twittercrawler.crawler;
 
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -7,30 +7,32 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 
-import sg.edu.smu.weigong.TwitterUtil.crawler.Crawler;
-import sg.edu.smu.weigong.TwitterUtil.util.TextUtil;
+import sg.edu.smu.sis.twittercrawler.util.UserIdReader;
 import twitter4j.ResponseList;
 import twitter4j.TwitterException;
 import twitter4j.User;
 
-public class CrawlUserProfile {
+public class CrawlFolloweeLinks {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, InterruptedException, TwitterException {
-		String userIdFile = "C:\\Users\\wei.gong.2011\\Dropbox\\Daily Records\\hidden topic interest\\data\\seedUserFolloweeIdsList.csv";
-		String outputUserProfileFile = "E:\\hidden topic interest\\followeeProfile.csv";
+		String userIdFile = "/Users/sunflower/Dropbox/Daily Records/hidden topic interest/data/seedUserFolloweeIdsList_tail.csv";
+		//String outputTweetsFile = "C:\\Users\\wei.gong.2011\\Dropbox\\Daily Records\\hidden topic interest\\data\\userTweets.csv";
+		String outputFolloweeLinkFile = "/Users/sunflower/Dropbox/Daily Records/hidden topic interest/data/testUserFolloweeLink.csv";
 		if(args.length == 2){
 			userIdFile = args[0];
-			outputUserProfileFile = args[1];
+			//outputTweetsFile = args[1];
+			outputFolloweeLinkFile = args[1];
 		}
 
 		//load user id list
-		long[] usersList = TextUtil.getUserList(userIdFile);
+		long[] usersList = UserIdReader.getUserList(userIdFile);
 		
 		//output file
-		PrintWriter profileWriter = new PrintWriter(new BufferedWriter(new FileWriter(outputUserProfileFile)));
+		PrintWriter followWriter = new PrintWriter(new BufferedWriter(new FileWriter(outputFolloweeLinkFile)));
 		
 		//new crawler
 		Crawler crawler = new Crawler();
+		
 
 		//At each time, look up 99 users and crawl their follw links
 		int numOfUsers = usersList.length; 
@@ -43,17 +45,24 @@ public class CrawlUserProfile {
 				subUsersList = Arrays.copyOfRange(usersList, i*99, numOfUsers);
 			}
 			
-			
 			ResponseList<User> users = crawler.crawlResponseUsers(subUsersList);
 			
 			if(users != null){
 				for (User user : users) {
+					boolean isProtected = user.isProtected();
+			    	if(isProtected == true){
+			    		continue;
+			    	}
 			    	System.out.println("User: @" + user.getId());
-			    	profileWriter.println(crawler.crawlUserProfile(user));
+			    	followWriter.print(user.getId()+",");
+			    	//followWriter.print(CrawlerForOneUser.crawlUserFollowerLinks() + ",");
+			    	followWriter.println(crawler.crawlUserFolloweeLinks(user));
 				}
 			}
+			followWriter.flush();
 		}
-		profileWriter.close();
+		followWriter.close();
+		
 	}
 
 }

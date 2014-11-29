@@ -39,7 +39,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>sg.edu.smu.weigong.TwitterUtil.main.CrawlUserTweets</mainClass>
+							<mainClass>sg.edu.smu.sis.twittercrawler.crawler.CrawlUserTweets</mainClass>
 							<addClasspath>true</addClasspath>
 						</manifest>
 					</archive>

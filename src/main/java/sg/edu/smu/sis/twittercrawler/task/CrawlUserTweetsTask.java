@@ -1,11 +1,11 @@
-package sg.edu.smu.weigong.TwitterUtil.task;
+package sg.edu.smu.sis.twittercrawler.task;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import sg.edu.smu.weigong.TwitterUtil.crawler.Crawler;
+import sg.edu.smu.sis.twittercrawler.crawler.Crawler;
 import twitter4j.TwitterException;
 
 /**
