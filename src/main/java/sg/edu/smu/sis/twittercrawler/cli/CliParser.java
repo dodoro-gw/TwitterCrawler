@@ -20,14 +20,22 @@ public class CliParser {
     private static final String FOLLOWERS = "followers";
     private static final String FOLLOWEES = "followees";
 
-    public static void main(String[] args) {
-        Options options = new Options();
+    private static final Options options;
+
+    static {
+        options = new Options();
         options.addOption(OptionBuilder.withLongOpt(PROFILE).withDescription("crawl user profile").create());
         options.addOption(OptionBuilder.withLongOpt(TWEETS).withDescription("crawl user tweets").create());
         options.addOption(OptionBuilder.withLongOpt(FOLLOWERS).withDescription("crawl user followers").create());
         options.addOption(OptionBuilder.withLongOpt(FOLLOWEES).withDescription("crawl user followees").create());
+    }
 
+    public static void main(String[] args) {
+        List<AbstractTask> tasks = createTasks(args);
+        // TODO
+    }
 
+    private static List<AbstractTask> createTasks(String[] args) {
         List<AbstractTask> tasks = new ArrayList<>();
         try {
             CommandLineParser parser = new BasicParser();
@@ -43,11 +51,9 @@ public class CliParser {
             }
         } catch (ParseException e) {
             e.printStackTrace();
-            System.exit(-1);
         }
 
-        // TODO
-
+        return tasks;
     }
 
 }
