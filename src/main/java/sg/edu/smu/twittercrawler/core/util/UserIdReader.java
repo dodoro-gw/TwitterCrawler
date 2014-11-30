@@ -1,4 +1,4 @@
-package sg.edu.smu.sis.twittercrawler.util;
+package sg.edu.smu.twittercrawler.core.util;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

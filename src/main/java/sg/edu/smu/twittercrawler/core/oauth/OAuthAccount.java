@@ -1,4 +1,4 @@
-package sg.edu.smu.sis.twittercrawler.oauth;
+package sg.edu.smu.twittercrawler.core.oauth;
 
 /**
  * Created by taosun on 28/11/14.

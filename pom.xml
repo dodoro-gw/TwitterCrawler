@@ -33,7 +33,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>sg.edu.smu.sis.twittercrawler.cli.Main</mainClass>
+							<mainClass>sg.edu.smu.twittercrawler.examples.main.Main</mainClass>
 							<addClasspath>true</addClasspath>
 						</manifest>
 					</archive>
