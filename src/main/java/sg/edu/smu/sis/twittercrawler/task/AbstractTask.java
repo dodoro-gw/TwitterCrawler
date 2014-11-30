@@ -1,50 +1,37 @@
 package sg.edu.smu.sis.twittercrawler.task;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import sg.edu.smu.sis.twittercrawler.crawler.Crawler;
 import twitter4j.TwitterException;
 import twitter4j.User;
 
+import java.io.*;
+
 public abstract class AbstractTask {
-	
-	private User user;
 
-	protected String result;
-	
-	protected PrintWriter writer;
-	
-	public AbstractTask() {
-	}
-	
-	public AbstractTask(PrintWriter w){
-		this.writer = w;
-	}
-	
-	public PrintWriter getWriter() {
-		return writer;
-	}
+    private OutputStrategy outputStrategy;
 
-	public void setWriter(PrintWriter writer) {
-		this.writer = writer;
-	}
+    public void execute(User user, Crawler crawler) {
+        String result = null;
+        try {
+            result = this.crawl(user, crawler);
+            outputStrategy.output(user, result);
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	public User getUser() {
-		return user;
-	}
+    protected abstract String crawl(User user, Crawler crawler) throws TwitterException, InterruptedException;
 
-	public void setUser(User user) {
-		this.user = user;
-	}
-	
-	protected void setResult(String result) {
-		this.result = result;
-	}
-	
-	public abstract void execute(Crawler crawler) throws TwitterException, InterruptedException;
-	
-	public  void output() throws IOException {		
-		writer.println(this.result);
-	}
+    public OutputStrategy getOutputStrategy() {
+        return outputStrategy;
+    }
+
+    public void setOutputStrategy(OutputStrategy outputStrategy) {
+        this.outputStrategy = outputStrategy;
+    }
+
 }

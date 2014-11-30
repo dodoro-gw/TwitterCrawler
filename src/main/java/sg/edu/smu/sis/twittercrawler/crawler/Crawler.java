@@ -1,8 +1,7 @@
 package sg.edu.smu.sis.twittercrawler.crawler;
 
-import sg.edu.smu.sis.twittercrawler.task.AbstractTask;
-import sg.edu.smu.sis.twittercrawler.util.TwitterUtil;
 import sg.edu.smu.sis.twittercrawler.oauth.TwitterClientAccountList;
+import sg.edu.smu.sis.twittercrawler.util.TwitterUtil;
 import twitter4j.*;
 
 import java.util.List;
@@ -16,11 +15,6 @@ public class Crawler {
 		twitter = TwitterClientAccountList.createTwitterClient(10);
 	}
 	
-	public void crawl(AbstractTask task) {
-		User user = task.getUser();
-		// TODO implement it
-	}
-
 	public ResponseList<User> crawlResponseUsers(long[] subUsersList) {
 		ResponseList<User> users = null;
 		while (users == null) {
