@@ -1,13 +1,20 @@
 TwitterCrawler
 ==============
-This project is used for crawling `Twitter` data (such as user profile, user follow links, and user tweets) given a list of twitter users' ID.
+This project is used for crawling `Twitter` data for research use.
 
-This project and the crawled data are for research use only. 
+TwitterCrawler can crawl user profile, user followee/follower links, and user tweets given a list of twitter users' ID.
 
-This project uses Twitter4j (http://twitter4j.org/en/index.html).
+TwitterCrawler uses Twitter4j (http://twitter4j.org/en/index.html).
 
-Crawling accounts
+A main goal of TwitterCrawler is to fasten the crawling speed by using a list of Twitter application accounts. Once an account reaches rate limit, TwitterCrawler chooses another account to continue crawling the required data. 
+
+
+Twitter Application accounts
 =================
-In order to get crawling accounts from Twitter, see http://twitter.com/oauth_clients/new.
+To use TwitterCrawler, one needs to have at least one Twitter application account. To fasten the crawling speed, one needs a list of accounts.
+
+In order to get accounts from Twitter, see http://twitter.com/oauth_clients/new.
 
 How to set the accounts, see http://twitter4j.org/en/code-examples.html (No.7 OAuth support).
+
+
