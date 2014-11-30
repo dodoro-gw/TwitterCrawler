@@ -4,11 +4,12 @@ import org.apache.commons.cli.*;
 import sg.edu.smu.sis.twittercrawler.crawler.Crawler;
 import sg.edu.smu.sis.twittercrawler.crawler.CrawlerProcessor;
 import sg.edu.smu.sis.twittercrawler.task.AbstractTask;
-import sg.edu.smu.sis.twittercrawler.task.CrawlFolloweeTask;
-import sg.edu.smu.sis.twittercrawler.task.CrawlUserProfileTask;
-import sg.edu.smu.sis.twittercrawler.task.CrawlUserTweetsTask;
+import sg.edu.smu.sis.twittercrawler.task.CrawlTaskFactory;
+import sg.edu.smu.sis.twittercrawler.task.CrawlTaskType;
+import sg.edu.smu.sis.twittercrawler.task.FileOutputStrategy;
 import sg.edu.smu.sis.twittercrawler.util.UserIdReader;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,18 +68,24 @@ public class Main {
             }
             if (line.hasOption(PROFILE)) {
                 userProfileFile = line.getOptionValue(PROFILE);
-                tasks.add(new CrawlUserProfileTask());
+                tasks.add(CrawlTaskFactory.createTask(CrawlTaskType.PROFILE,
+                        new FileOutputStrategy(new File(userProfileFile))));
             }
             if (line.hasOption(TWEETS)) {
                 tweetsFile = line.getOptionValue(TWEETS);
-                tasks.add(new CrawlUserTweetsTask());
+                tasks.add(CrawlTaskFactory.createTask(CrawlTaskType.TWEETS,
+                        new FileOutputStrategy(new File(tweetsFile))));
             }
             if (line.hasOption(FOLLOWEES)) {
                 followeesFile = line.getOptionValue(FOLLOWEES);
-                tasks.add(new CrawlFolloweeTask());
+                tasks.add(CrawlTaskFactory.createTask(CrawlTaskType.TWEETS
+                        , new FileOutputStrategy(new File(followeesFile))));
             }
-
-        } catch (ParseException e) {
+            if (line.hasOption(FOLLOWERS)) {
+                // TODO
+                followersFile = line.getOptionValue(FOLLOWERS);
+            }
+        } catch (ParseException | IOException e) {
             e.printStackTrace();
             return;
         }
@@ -91,9 +98,8 @@ public class Main {
             return;
         }
 
-        CrawlerProcessor processor = new CrawlerProcessor();
-        processor.setCrawler(new Crawler());
-        processor.run(userIds, tasks);
+        CrawlerProcessor processor = new CrawlerProcessor(new Crawler(), tasks);
+        processor.run(userIds);
     }
 
 }
