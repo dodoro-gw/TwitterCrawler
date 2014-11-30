@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 
 /**
- * Created by taosun on 28/11/14.
+ * @author taosun
  */
 public class TwitterAccountsLoaderTest {
 
