@@ -1,6 +1,6 @@
 TwitterCrawler
 ==============
-This project is used for crawling `Twitter` data for research use.
+To crawl `Twitter` data for research use.
 
 TwitterCrawler can crawl user profile, user followee/follower links, and user tweets given a list of twitter users' ID.
 
