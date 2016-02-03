@@ -6,7 +6,7 @@ TwitterCrawler can crawl user profile, user followee/follower links, and user tw
 
 TwitterCrawler uses Twitter4j (http://twitter4j.org/en/index.html).
 
-A main goal of TwitterCrawler is to speed up the crawling speed by using a list of Twitter application accounts. Once an account reaches rate limit, TwitterCrawler chooses another account to continue crawling the required data. 
+The main goal of TwitterCrawler is to speed up the crawling speed by using a list of Twitter application accounts. Once an account reaches rate limit, TwitterCrawler chooses another account to continue crawling the required data. 
 
 
 Twitter Application accounts
